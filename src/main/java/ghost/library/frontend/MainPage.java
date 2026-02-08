@@ -1,9 +1,8 @@
 package ghost.library.frontend;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+
+import javax.swing.JFrame;
 
 import ghost.library.frontend.panels.MainPanel;
 
@@ -15,14 +14,12 @@ public final class MainPage {
 
     public void createWindow() {
         FlatLightLaf.setup();
-        initMainFrame();
-        mainFrame.add(new MainPanel());
-    }
 
-    private void initMainFrame() {
-        mainFrame.setSize(width, height);
+        mainFrame.add(new MainPanel());
+
+        mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
