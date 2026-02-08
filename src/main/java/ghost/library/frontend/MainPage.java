@@ -1,6 +1,7 @@
 package ghost.library.frontend;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 
 import javax.swing.JFrame;
 

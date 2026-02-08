@@ -85,7 +85,6 @@ public class MainPanel extends JPanel {
         return buttons;
     } 
 
-
     private JPanel topPanel() {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
@@ -116,7 +115,7 @@ public class MainPanel extends JPanel {
         };
 
         JTable books = new JTable(data, columns);
-        books.setPreferredScrollableViewportSize(new Dimension(800, 500));
+        books.setPreferredScrollableViewportSize(new Dimension(1200, 700));
         JScrollPane scrollPane = new JScrollPane(books);
         
         scrollPane.setBorder(new LineBorder(Color.GRAY, 1, false));
