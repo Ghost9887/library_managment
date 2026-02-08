@@ -1,12 +1,17 @@
 package ghost.library;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import javax.swing.*;
+
+import ghost.library.frontend.GUIManager;
 
 public class Library {
+
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+
+        GUIManager manager = new GUIManager();
+        manager.run();
+
     }
+
 }
 
 
