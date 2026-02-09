@@ -6,6 +6,8 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import javax.swing.JFrame;
 
 import ghost.library.frontend.panels.MainPanel;
+import ghost.library.backend.controllers.MainBookController;
+import ghost.library.backend.controllers.MainUserController;
 
 public final class MainPage {
 
@@ -16,8 +18,7 @@ public final class MainPage {
     public void createWindow() {
         FlatLightLaf.setup();
 
-        mainFrame.add(new MainPanel());
-
+        mainFrame.add(new MainPanel(new MainBookController(), new MainUserController()));
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);

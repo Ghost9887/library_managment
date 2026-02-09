@@ -17,9 +17,17 @@ import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Color;
 
+import ghost.library.backend.controllers.MainBookController;
+import ghost.library.backend.controllers.MainUserController;
+
 public class MainPanel extends JPanel {
     
-    public MainPanel() {
+    private final MainBookController bookController;
+    private final MainUserController userController;
+
+    public MainPanel(MainBookController bookController, MainUserController userController) {
+        this.bookController = bookController;
+        this.userController = userController;
         createPanel();
     }
 
@@ -68,21 +76,24 @@ public class MainPanel extends JPanel {
 
     private List<JButton> sideButtons() {
         JButton addBook = new JButton("add book");
-        JButton editBook = new JButton("edit book");
-        JButton deleteBook = new JButton("delete book");
-        JButton addUser = new JButton("add user");
-        JButton editUser = new JButton("edit user");
-        JButton deleteUser = new JButton("delete user");
-        
-        List<JButton> buttons = new ArrayList<>();
-        buttons.add(addBook);
-        buttons.add(editBook);
-        buttons.add(deleteBook);
-        buttons.add(addUser);
-        buttons.add(editUser);
-        buttons.add(deleteUser);
+        addBook.addActionListener(e -> bookController.addBook());
 
-        return buttons;
+        JButton editBook = new JButton("edit book");
+        editBook.addActionListener(e -> bookController.editBook());
+
+        JButton deleteBook = new JButton("delete book");
+        deleteBook.addActionListener(e -> bookController.deleteBook());
+
+        JButton addUser = new JButton("add user");
+        addUser.addActionListener(e -> userController.addUser());
+
+        JButton editUser = new JButton("edit user");
+        editUser.addActionListener(e -> userController.editUser());
+
+        JButton deleteUser = new JButton("delete user");
+        deleteUser.addActionListener(e -> userController.deleteUser());
+        
+        return List.of(addBook, editBook, deleteBook, addUser, editUser, deleteUser);
     } 
 
     private JPanel topPanel() {
