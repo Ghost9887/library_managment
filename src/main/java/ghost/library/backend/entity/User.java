@@ -1,4 +1,4 @@
-package ghost.library.entity;
+package ghost.library.backend.entity;
 
 import java.util.ArrayList;
 import java.util.List;

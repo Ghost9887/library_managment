@@ -1,4 +1,4 @@
-package ghost.library.entity;
+package ghost.library.backend.entity;
 
 import java.time.LocalDate;
 
