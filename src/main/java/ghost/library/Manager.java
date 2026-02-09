@@ -1,7 +1,9 @@
 package ghost.library;
 
 import ghost.library.frontend.MainPage;
-import ghost.library.backend.repo.Database;
+import ghost.library.backend.Database;
+import java.util.Optional;
+import java.sql.Connection;
 import java.io.File;
 
 public final class Manager {
@@ -15,6 +17,9 @@ public final class Manager {
                 System.exit(1);
             }
         }
+
+        Database.connect();
+
         new MainPage().createWindow();
     }
 

@@ -1,4 +1,4 @@
-package ghost.library.backend.repo;
+package ghost.library.backend;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -6,20 +6,24 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Optional;
 
-public class Database {
+public final class Database {
 
     private final static String URL = "jdbc:sqlite:data/library.db";
+    private static Connection connection;
 
-    public static Optional<Connection> connect() {
+    public static String getUrl() {
+        return URL;
+    }
+
+    public static void connect() {
         try (Connection con = DriverManager.getConnection(URL)) {
-            return Optional.of(con);
+            connection = con;
 
         }catch (SQLException e) {
             e.printStackTrace();
-            return Optional.empty();
         }
     }
-
+    
     public static int init() {
         try (Connection con = DriverManager.getConnection(URL)) {
             if (con != null) {
@@ -70,5 +74,4 @@ public class Database {
             e.printStackTrace();
         }
     }
-
 }

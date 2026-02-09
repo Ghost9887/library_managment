@@ -1,6 +1,12 @@
 package ghost.library.backend.controllers;
 
+import ghost.library.backend.services.BookService;
+
 public class MainBookController {
+    
+    private final BookService bookService = new BookService();
+
+    public MainBookController() {}
 
     public void addBook() {
         System.out.println("adding book");
