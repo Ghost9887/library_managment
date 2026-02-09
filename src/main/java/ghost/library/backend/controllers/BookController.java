@@ -4,14 +4,14 @@ import ghost.library.backend.services.BookService;
 import ghost.library.backend.entity.Book;
 import java.time.LocalDate;
 
-public class MainBookController {
+public class BookController {
     
     private final BookService bookService = new BookService();
 
-    public MainBookController() {}
+    public BookController() {}
 
-    public void createBook() {
-        Book newBook = new Book("test", "tester", "2024");
+    public void createBook(String title, String author, String year) {
+        Book newBook = new Book(title, author, year);
         bookService.addBook(newBook);
     }
 
@@ -21,5 +21,9 @@ public class MainBookController {
 
     public void deleteBook() {
         System.out.println("deleting book");
+    }
+
+    public void getAllBooks() {
+        bookService.getAll();
     }
 }

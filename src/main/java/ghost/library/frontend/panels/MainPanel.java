@@ -1,5 +1,7 @@
 package ghost.library.frontend.panels;
 
+import ghost.library.frontend.pages.AddBookPage;
+import ghost.library.backend.controllers.BookController;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -17,21 +19,12 @@ import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Color;
 
-import ghost.library.backend.controllers.MainBookController;
-import ghost.library.backend.controllers.MainUserController;
-
 public class MainPanel extends JPanel {
     
-    private final MainBookController bookController;
-    private final MainUserController userController;
-
-    public MainPanel(MainBookController bookController, MainUserController userController) {
-        this.bookController = bookController;
-        this.userController = userController;
+    public MainPanel() {
         createPanel();
     }
 
-    
     private void createPanel() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -76,24 +69,30 @@ public class MainPanel extends JPanel {
 
     private List<JButton> sideButtons() {
         JButton addBook = new JButton("add book");
-        addBook.addActionListener(e -> bookController.createBook());
+        addBook.addActionListener(e -> new AddBookPage().createAddBookWindow());
 
         JButton editBook = new JButton("edit book");
-        editBook.addActionListener(e -> bookController.editBook());
+        //editBook.addActionListener(e -> bookController.editBook());
 
         JButton deleteBook = new JButton("delete book");
-        deleteBook.addActionListener(e -> bookController.deleteBook());
+        //deleteBook.addActionListener(e -> bookController.deleteBook());
 
         JButton addUser = new JButton("add user");
-        addUser.addActionListener(e -> userController.addUser());
+        //addUser.addActionListener(e -> userController.addUser());
 
         JButton editUser = new JButton("edit user");
-        editUser.addActionListener(e -> userController.editUser());
+        //editUser.addActionListener(e -> userController.editUser());
 
         JButton deleteUser = new JButton("delete user");
-        deleteUser.addActionListener(e -> userController.deleteUser());
-        
-        return List.of(addBook, editBook, deleteBook, addUser, editUser, deleteUser);
+        //deleteUser.addActionListener(e -> userController.deleteUser());
+
+        //TEMPORARY       
+        JButton printBooks = new JButton("Print Books");
+        printBooks.addActionListener(e -> new BookController().getAllBooks());
+
+        JButton printUsers = new JButton("Print Users");
+
+        return List.of(addBook, editBook, deleteBook, addUser, editUser, deleteUser, printBooks, printUsers);
     } 
 
     private JPanel topPanel() {

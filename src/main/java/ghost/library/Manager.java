@@ -1,6 +1,6 @@
 package ghost.library;
 
-import ghost.library.frontend.MainPage;
+import ghost.library.frontend.pages.MainPage;
 import ghost.library.backend.Database;
 import java.io.File;
 
@@ -16,7 +16,7 @@ public final class Manager {
             }
         }
 
-        new MainPage().createWindow();
+        new MainPage().createMainWindow();
     }
 
     public boolean checkIfDBExists() {

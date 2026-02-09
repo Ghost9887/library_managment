@@ -2,11 +2,11 @@ package ghost.library.backend.controllers;
 
 import ghost.library.backend.services.UserService;
 
-public class MainUserController {
+public class UserController {
 
     private final UserService userService = new UserService();
 
-    public MainUserController() {}
+    public UserController() {}
 
     public void addUser() {
         System.out.println("add user");

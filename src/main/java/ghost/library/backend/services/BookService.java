@@ -12,10 +12,13 @@ public final class BookService {
     }
 
     public void editBook() {
-        bookRepository.getAll();
     }
 
     public void deleteBook() {
+    }
+
+    public void getAll() {
+        bookRepository.getAll();
     }
 
 }
