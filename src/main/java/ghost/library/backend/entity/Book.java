@@ -4,9 +4,11 @@ import java.time.LocalDate;
 
 public class Book {
 
+    private int id;
     private String name;
     private String author;
     private LocalDate releaseDate;
+    private int available;
 
     public Book(String name, String author, LocalDate releaseDate) {
         this.name = name;

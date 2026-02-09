@@ -9,7 +9,6 @@ public class User {
     private String firstName;
     private String lastName;
     private List<Book> books = new ArrayList<>();
-    private List<Book> history = new ArrayList<>();
 
     public User(String firstName, String lastName) {
         this.firstName = firstName;
@@ -24,18 +23,8 @@ public class User {
         return lastName;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public List<Book> getHistory() {
-        return history;
-    }
-
     @Override
     public String toString() {
-        return firstName + " " + lastName +
-            " (Books: " + books.size() +
-            ", History: " + history.size() + ")";
+        return firstName + " " + lastName;
     }
 }
