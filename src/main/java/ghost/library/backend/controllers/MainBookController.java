@@ -1,6 +1,8 @@
 package ghost.library.backend.controllers;
 
 import ghost.library.backend.services.BookService;
+import ghost.library.backend.entity.Book;
+import java.time.LocalDate;
 
 public class MainBookController {
     
@@ -8,12 +10,13 @@ public class MainBookController {
 
     public MainBookController() {}
 
-    public void addBook() {
-        System.out.println("adding book");
+    public void createBook() {
+        Book newBook = new Book("test", "tester", "2024");
+        bookService.addBook(newBook);
     }
 
     public void editBook() {
-        System.out.println("editing book");
+        bookService.editBook();
     }
 
     public void deleteBook() {

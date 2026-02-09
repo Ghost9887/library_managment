@@ -9,18 +9,13 @@ import java.util.Optional;
 public final class Database {
 
     private final static String URL = "jdbc:sqlite:data/library.db";
-    private static Connection connection;
 
-    public static String getUrl() {
-        return URL;
-    }
-
-    public static void connect() {
-        try (Connection con = DriverManager.getConnection(URL)) {
-            connection = con;
-
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(URL);
         }catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
     }
     
@@ -41,15 +36,15 @@ public final class Database {
     private static void initTables(Connection con) {
         try {
             String createBooks = "CREATE TABLE IF NOT EXISTS books ("
-            + "     id INTEGER PRIMARY KEY,"
+            + "     id INTEGER PRIMARY KEY AUTOINCREMENT,"
             + "     title TEXT NOT NULL,"
             + "     author TEXT NOT NULL,"
-            + "     release_date TEXT NOT NULL,"
+            + "     year TEXT NOT NULL,"
             + "     available INTEGER NOT NULL"
             + ");";
 
             String createUsers = "CREATE TABLE IF NOT EXISTS users ("
-            + "     id INTEGER PRIMARY KEY,"
+            + "     id INTEGER PRIMARY KEY AUTOINCREMENT,"
             + "     first_name TEXT NOT NULL,"
             + "     last_name TEXT NOT NULL"
             + ");";

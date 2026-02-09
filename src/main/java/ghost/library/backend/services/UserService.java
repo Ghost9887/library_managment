@@ -4,6 +4,8 @@ import ghost.library.backend.entity.User;
 import ghost.library.backend.repo.UserRepository;
 
 public final class UserService {
+
+    private final UserRepository userRepository = new UserRepository();
     
     public void createUser() {
     }

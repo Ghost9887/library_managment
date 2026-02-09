@@ -5,10 +5,14 @@ import ghost.library.backend.repo.BookRepository;
 
 public final class BookService {
 
-    public void createBook() {
+    private final BookRepository bookRepository = new BookRepository(); 
+
+    public void addBook(Book book) {
+        bookRepository.add(book);
     }
 
     public void editBook() {
+        bookRepository.getAll();
     }
 
     public void deleteBook() {

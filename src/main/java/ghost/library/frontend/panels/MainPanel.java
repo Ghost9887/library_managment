@@ -76,7 +76,7 @@ public class MainPanel extends JPanel {
 
     private List<JButton> sideButtons() {
         JButton addBook = new JButton("add book");
-        addBook.addActionListener(e -> bookController.addBook());
+        addBook.addActionListener(e -> bookController.createBook());
 
         JButton editBook = new JButton("edit book");
         editBook.addActionListener(e -> bookController.editBook());

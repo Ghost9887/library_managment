@@ -4,7 +4,7 @@ import ghost.library.backend.services.UserService;
 
 public class MainUserController {
 
-    private static final UserService userService = new UserService();
+    private final UserService userService = new UserService();
 
     public MainUserController() {}
 
