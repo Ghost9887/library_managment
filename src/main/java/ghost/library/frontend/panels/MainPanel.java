@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
 import javax.swing.JOptionPane;
@@ -44,13 +45,19 @@ public class MainPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(topPanel(), gbc);
 
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        add(searchPanel(), gbc);
+
         gbc.gridwidth = 1;
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
         add(sidePanel(), gbc);
 
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.BOTH;   
         gbc.weightx = 10.0;
@@ -58,7 +65,7 @@ public class MainPanel extends JPanel {
         add(bookTablePanel(), gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(footerPanel(), gbc);
@@ -143,11 +150,24 @@ public class MainPanel extends JPanel {
         return topPanel;
     }
 
+    private JPanel searchPanel() {
+        JPanel searchPanel = new JPanel();
+
+        JTextField searchInput = new JTextField(15);
+        JButton searchBtn = new JButton("Search");
+        searchPanel.add(searchInput);
+        searchPanel.add(searchBtn);
+
+        return searchPanel;
+    }
+
     private JPanel bookTablePanel() {
         bookTablePanel = new JPanel();
 
-        buildBookTable();
+         
 
+        buildBookTable();
+        
         return bookTablePanel;
     }
 
