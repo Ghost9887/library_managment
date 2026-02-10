@@ -7,13 +7,13 @@ public class Book {
     private int id;
     private String title;
     private String author;
-    private String year;
+    private String releaseDate;
     private int available;
 
-    public Book(String title, String author, String year) {
+    public Book(String title, String author, String releaseDate) {
         this.title = title;
         this.author = author;
-        this.year = year;
+        this.releaseDate = releaseDate;
     }
 
     public String getTitle() {
@@ -24,8 +24,8 @@ public class Book {
         return author;
     }
 
-    public String getYear() {
-        return year;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
     public void setId(int id) {
@@ -38,6 +38,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return "ID: " + id + " : Title: " + title + " :  Author: " + author + " :  Year: " + year + " : Available: " + available;
+        return "ID: " + id + " : Title: " + title + " :  Author: " + author + " :  releaseDate: " + releaseDate + " : Available: " + available;
     }
 }

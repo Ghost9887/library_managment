@@ -13,7 +13,7 @@ public final class BookRepository {
     public BookRepository() {}
     
     public void add(Book book) {
-        final String query = "INSERT INTO books (title, author, year, available)"
+        final String query = "INSERT INTO books (title, author, release_date, available)"
         + "VALUES (?, ?, ?, ?);";
 
         try (Connection con = Database.getConnection()){
@@ -21,7 +21,7 @@ public final class BookRepository {
 
             stmnt.setString(1, book.getTitle());
             stmnt.setString(2, book.getAuthor());
-            stmnt.setString(3, book.getYear());
+            stmnt.setString(3, book.getReleaseDate());
             stmnt.setInt(4, 1);
 
             stmnt.executeUpdate();
@@ -44,7 +44,7 @@ public final class BookRepository {
                 Book temp = new Book(
                     res.getString("title"),
                     res.getString("author"),
-                    res.getString("year")
+                    res.getString("release_date")
                 );
                 temp.setId(res.getInt("id"));
                 temp.setAvailable(res.getInt("available"));

@@ -5,12 +5,17 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
 import java.awt.Window;
+import java.text.DateFormat;
+import javax.swing.text.DateFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AddBookPanel extends JPanel {
     
@@ -18,7 +23,7 @@ public class AddBookPanel extends JPanel {
 
     private JTextField titleInput;
     private JTextField authorInput;
-    private JTextField yearInput;
+    private JFormattedTextField releaseInput;
 
     public AddBookPanel() {
         createAddBookWindow();
@@ -52,10 +57,10 @@ public class AddBookPanel extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        add(yearLabel(), gbc);
+        add(releaseLabel(), gbc);
 
         gbc.gridx = 1;
-        add(yearInput(), gbc);
+        add(releaseInput(), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -64,89 +69,98 @@ public class AddBookPanel extends JPanel {
     }
 
     private JPanel heading() {
-        JPanel heading = new JPanel();
-        heading.setBorder(new EmptyBorder(20, 20, 20, 20));
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JLabel headingLabel = new JLabel("Add book");
-        headingLabel.setFont(new Font("Serif", Font.BOLD, 18));
-        heading.add(headingLabel);
+        JLabel label = new JLabel("Add book");
+        label.setFont(new Font("Serif", Font.BOLD, 18));
+        panel.add(label);
 
-        return heading;
+        return panel;
     }
 
     private JPanel titleLabel() {
-        JPanel title = new JPanel();
-        title.setBorder(new EmptyBorder(5, 5, 5, 50));
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        JLabel titleLabel = new JLabel("Title: ");
-        titleLabel.setFont(new Font("Serif", Font.PLAIN, 13));
-        title.add(titleLabel);
+        JLabel label = new JLabel("Title: ");
+        label.setFont(new Font("Serif", Font.PLAIN, 13));
+        panel.add(label);
 
-        return title;
+        return panel;
     }
 
     private JPanel titleInput() {
-        JPanel input = new JPanel();
-        input.setBorder(new EmptyBorder(5, 5, 5, 50));
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        titleInput = new JTextField(20);
-        input.add(titleInput);
+        titleInput = new JTextField(15);
+        panel.add(titleInput);
 
-        return input;
+        return panel;
     }
 
     private JPanel authorLabel() {
-        JPanel author = new JPanel();
-        author.setBorder(new EmptyBorder(5, 5, 5, 50));
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        JLabel authorLabel = new JLabel("Author: ");
-        authorLabel.setFont(new Font("Serif", Font.PLAIN, 13));
-        author.add(authorLabel);
+        JLabel label = new JLabel("Author: ");
+        label.setFont(new Font("Serif", Font.PLAIN, 13));
+        panel.add(label);
 
-        return author;
+        return panel;
     }
 
     private JPanel authorInput() {
-        JPanel input = new JPanel();
-        input.setBorder(new EmptyBorder(5, 5, 5, 50));
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        authorInput = new JTextField(20);
-        input.add(authorInput);
+        authorInput = new JTextField(15);
+        panel.add(authorInput);
 
-        return input;
+        return panel;
     }
 
-    private JPanel yearLabel() {
-        JPanel year = new JPanel();
-        year.setBorder(new EmptyBorder(5, 5, 5, 50));
+    private JPanel releaseLabel() {
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        JLabel yearLabel = new JLabel("Year: ");
-        yearLabel.setFont(new Font("Serif", Font.PLAIN, 13));
-        year.add(yearLabel);
+        JLabel label = new JLabel("Release Date: ");
+        label.setFont(new Font("Serif", Font.PLAIN, 13));
+        panel.add(label);
 
-        return year;
+        return panel;
     }
 
-    private JPanel yearInput() {
-        JPanel input = new JPanel();
-        input.setBorder(new EmptyBorder(5, 5, 5, 50));
+    private JPanel releaseInput() {
+        JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(5, 5, 5, 50));
+        
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        DateFormatter df = new DateFormatter(format);
+        df.setAllowsInvalid(false);
+        df.setOverwriteMode(true);
 
-        yearInput = new JTextField(5);
-        input.add(yearInput);
+        releaseInput = new JFormattedTextField(df);
+        releaseInput.setColumns(10);
+        releaseInput.setValue(new Date());
 
-        return input;
+        panel.add(releaseInput);
+
+
+        return panel;
     }
 
     private JPanel saveButton() {
-        JPanel save = new JPanel();
+        JPanel panel = new JPanel();
 
-        save.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         JButton saveBtn = new JButton("Save");
         saveBtn.addActionListener(e -> {
             bookService.add(
                 titleInput.getText(),
                 authorInput.getText(),
-                yearInput.getText()
+                releaseInput.getText()
             );
             
             Window window = SwingUtilities.getWindowAncestor(this);
@@ -155,8 +169,8 @@ public class AddBookPanel extends JPanel {
             }
         });
 
-        save.add(saveBtn);
-        return save;
+        panel.add(saveBtn);
+        return panel;
     }
 
 }

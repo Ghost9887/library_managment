@@ -39,7 +39,7 @@ public final class Database {
             + "     id INTEGER PRIMARY KEY AUTOINCREMENT,"
             + "     title TEXT NOT NULL,"
             + "     author TEXT NOT NULL,"
-            + "     year TEXT NOT NULL,"
+            + "     release_date TEXT NOT NULL,"
             + "     available INTEGER NOT NULL"
             + ");";
 

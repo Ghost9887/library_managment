@@ -7,8 +7,8 @@ public final class BookService {
 
     private final BookRepository bookRepository = new BookRepository(); 
 
-    public void add(String title, String author, String year) {
-        Book newBook = new Book(title, author, year);
+    public void add(String title, String author, String release) {
+        Book newBook = new Book(title, author, release);
         bookRepository.add(newBook);
     }
 
