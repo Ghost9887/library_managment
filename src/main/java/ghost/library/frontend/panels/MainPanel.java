@@ -1,7 +1,7 @@
 package ghost.library.frontend.panels;
 
 import ghost.library.frontend.pages.AddBookPage;
-import ghost.library.backend.controllers.BookController;
+import ghost.library.backend.services.BookService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -88,7 +88,7 @@ public class MainPanel extends JPanel {
 
         //TEMPORARY       
         JButton printBooks = new JButton("Print Books");
-        printBooks.addActionListener(e -> new BookController().getAllBooks());
+        printBooks.addActionListener(e -> new BookService().getAll());
 
         JButton printUsers = new JButton("Print Users");
 

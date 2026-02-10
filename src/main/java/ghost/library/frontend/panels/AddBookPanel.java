@@ -1,6 +1,6 @@
 package ghost.library.frontend.panels;
 
-import ghost.library.backend.controllers.BookController;
+import ghost.library.backend.services.BookService;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,7 +14,7 @@ import java.awt.Window;
 
 public class AddBookPanel extends JPanel {
     
-    private final BookController bookController = new BookController();
+    private final BookService bookService = new BookService();
 
     private JTextField titleInput;
     private JTextField authorInput;
@@ -143,7 +143,7 @@ public class AddBookPanel extends JPanel {
         save.setBorder(new EmptyBorder(10, 10, 10, 10));
         JButton saveBtn = new JButton("Save");
         saveBtn.addActionListener(e -> {
-            bookController.createBook(
+            bookService.add(
                 titleInput.getText(),
                 authorInput.getText(),
                 yearInput.getText()
