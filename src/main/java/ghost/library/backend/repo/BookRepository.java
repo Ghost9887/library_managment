@@ -27,9 +27,42 @@ public final class BookRepository {
             stmnt.setInt(4, 1);
 
             stmnt.executeUpdate();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-            System.out.println("added new book");
+    public void update(Book book) {
+        final String query = "UPDATE books "
+        + "SET title = ?, "
+        + "author = ?, "
+        + "release_date = ?, "
+        + "available = ? "
+        + "WHERE id = ?;";
 
+        try (Connection con = Database.getConnection()) {
+            PreparedStatement stmnt = con.prepareStatement(query);
+
+            stmnt.setString(1, book.getTitle());
+            stmnt.setString(2, book.getAuthor());
+            stmnt.setString(3, book.getReleaseDate());
+            stmnt.setInt(4, book.getAvailable());
+            stmnt.setInt(5, book.getId());
+
+            stmnt.executeUpdate();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int id) {
+        final String query = "DELETE FROM books WHERE id = ?";
+
+        try (Connection con = Database.getConnection()) {
+            PreparedStatement stmnt = con.prepareStatement(query);
+            stmnt.setInt(1, id);
+
+            stmnt.executeUpdate();
         }catch(SQLException e) {
             e.printStackTrace();
         }
@@ -63,18 +96,28 @@ public final class BookRepository {
         }
     }
 
-    public void delete(int id) {
-        final String query = "DELETE FROM books WHERE id = ?";
-
+    public Book getById(int id) {
+        final String query = 
+        "SELECT id, title, author, release_date, available FROM books WHERE id = ?";
+        
         try (Connection con = Database.getConnection()) {
             PreparedStatement stmnt = con.prepareStatement(query);
             stmnt.setInt(1, id);
 
-            stmnt.executeUpdate();
-            System.out.println("Removed book");
+            ResultSet res = stmnt.executeQuery();
+            Book book = new Book(
+                res.getString("title"),
+                res.getString("author"),
+                res.getString("release_date")
+            );
+            book.setId(res.getInt("id"));
+            book.setAvailable(res.getInt("available"));
+
+            return book;
 
         }catch(SQLException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

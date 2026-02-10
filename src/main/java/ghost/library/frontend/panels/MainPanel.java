@@ -1,6 +1,7 @@
 package ghost.library.frontend.panels;
 
 import ghost.library.frontend.pages.AddBookPage;
+import ghost.library.frontend.pages.EditBookPage;
 import ghost.library.backend.entity.Book;
 import ghost.library.backend.services.BookService;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import java.awt.Dimension;
 import java.awt.Color;
 
 public class MainPanel extends JPanel {
-    
+
     private final BookService bookService = new BookService();
     private JTable bookTable;
     private JPanel bookTablePanel;
@@ -83,7 +84,22 @@ public class MainPanel extends JPanel {
         addBook.addActionListener(e -> new AddBookPage().createAddBookWindow());
 
         JButton editBook = new JButton("edit book");
-        //editBook.addActionListener(e -> bookController.editBook());
+        editBook.addActionListener(e -> {
+            int[] rows = bookTable.getSelectedRows();
+            if (rows.length == 1) {
+
+                Book book = bookService.getBookById(String.valueOf(bookTable.getValueAt(rows[0], 0)));
+                if (book != null) {
+                    new EditBookPage().createEditBookWindow(book);
+                }else {
+                    showWarningAlert("No book found");
+                }
+            }else if (rows.length > 1) {
+                showWarningAlert("Too many books selected");
+            }else {
+                showWarningAlert("Nothing selected");
+            }
+        });
 
         JButton deleteBook = new JButton("delete book");
         deleteBook.addActionListener(e -> {
@@ -100,20 +116,7 @@ public class MainPanel extends JPanel {
             }
         });
 
-        JButton addUser = new JButton("add user");
-        //addUser.addActionListener(e -> userController.addUser());
-
-        JButton editUser = new JButton("edit user");
-        //editUser.addActionListener(e -> userController.editUser());
-
-        JButton deleteUser = new JButton("delete user");
-        //deleteUser.addActionListener(e -> userController.deleteUser());
-
-        //TEMPORARY       
-
-        JButton printUsers = new JButton("Print Users");
-
-        return List.of(refresh, addBook, editBook, deleteBook, addUser, editUser, deleteUser, printUsers);
+        return List.of(refresh, addBook, editBook, deleteBook);
     } 
 
     private JPanel topPanel() {
@@ -147,7 +150,7 @@ public class MainPanel extends JPanel {
 
     private void buildBookTable() {
         bookTablePanel.removeAll();
-        List<Book> booksList = bookService.getAll();
+        List<Book> booksList = bookService.getAllBooks();
 
         String[] columns = {"Id", "Title", "Author", "Release Date", "Available"};
 

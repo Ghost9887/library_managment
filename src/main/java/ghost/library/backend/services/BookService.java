@@ -8,12 +8,13 @@ public final class BookService {
 
     private final BookRepository bookRepository = new BookRepository(); 
 
-    public void add(String title, String author, String release) {
+    public void addBook(String title, String author, String release) {
         Book newBook = new Book(title, author, release);
         bookRepository.add(newBook);
     }
 
-    public void editBook() {
+    public void updateBook(Book book) {
+        bookRepository.update(book);
     }
 
     public void deleteBookById(String idString) {
@@ -21,8 +22,13 @@ public final class BookService {
         bookRepository.delete(id);
     }
 
-    public List<Book> getAll() {
+    public List<Book> getAllBooks() {
         return bookRepository.getAll();
+    }
+
+    public Book getBookById(String idString) {
+        int id = Integer.parseInt(idString);
+        return bookRepository.getById(id);
     }
 
 }

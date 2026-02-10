@@ -32,12 +32,28 @@ public class Book {
         return releaseDate;
     }
 
+    public int getAvailable() {
+        return available;
+    }
+
     public boolean isAvailable() {
         return available > 0;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public void setAvailable(int available) {
