@@ -53,8 +53,8 @@ public class MainPanel extends JPanel {
         gbc.gridy = 1;
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.BOTH;   
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
+        gbc.weightx = 10.0;
+        gbc.weighty = 10.0;
         add(bookTablePanel(), gbc);
 
         gbc.gridx = 0;

@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -159,20 +160,31 @@ public class AddBookPanel extends JPanel {
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         JButton saveBtn = new JButton("Save");
         saveBtn.addActionListener(e -> {
-            bookService.addBook(
-                titleInput.getText(),
-                authorInput.getText(),
-                releaseInput.getText()
-            );
-            mainPanel.buildBookTable();
-            Window window = SwingUtilities.getWindowAncestor(this);
-            if (window != null) {
-                window.dispose();
+
+            String title = titleInput.getText();
+            String author = authorInput.getText();
+            if (title.length() > 0 && author.length() > 0) {
+                bookService.addBook(
+                    title,
+                    author,
+                    releaseInput.getText()
+                );
+                mainPanel.buildBookTable();
+                Window window = SwingUtilities.getWindowAncestor(this);
+                if (window != null) {
+                    window.dispose();
+                }
+            }else {
+                showWarningAlert("Fields cannot be empty");           
             }
         });
 
         panel.add(saveBtn);
         return panel;
+    }
+
+    private void showWarningAlert(String message) {
+        JOptionPane.showMessageDialog(null, message);
     }
 
 }
