@@ -1,5 +1,6 @@
 package ghost.library.backend.services;
 
+import java.util.List;
 import ghost.library.backend.entity.Book;
 import ghost.library.backend.repo.BookRepository;
 
@@ -15,11 +16,13 @@ public final class BookService {
     public void editBook() {
     }
 
-    public void deleteBook() {
+    public void deleteBookById(String idString) {
+        int id = Integer.parseInt(idString);
+        bookRepository.delete(id);
     }
 
-    public void getAll() {
-        bookRepository.getAll();
+    public List<Book> getAll() {
+        return bookRepository.getAll();
     }
 
 }

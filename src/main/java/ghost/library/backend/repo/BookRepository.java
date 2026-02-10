@@ -2,6 +2,8 @@ package ghost.library.backend.repo;
 
 import ghost.library.backend.Database;
 import ghost.library.backend.entity.Book;
+import java.util.List;
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -33,13 +35,14 @@ public final class BookRepository {
         }
     }
 
-    public void getAll() {
+    public List<Book> getAll() {
         final String query = "SELECT * FROM books";
 
         try (Connection con = Database.getConnection()) {
             PreparedStatement stmnt = con.prepareStatement(query);
             ResultSet res = stmnt.executeQuery();
-
+            
+            List<Book> list = new ArrayList<>();
             while(res.next()) {
                 Book temp = new Book(
                     res.getString("title"),
@@ -49,8 +52,26 @@ public final class BookRepository {
                 temp.setId(res.getInt("id"));
                 temp.setAvailable(res.getInt("available"));
 
-                System.out.println(temp.toString());
+                list.add(temp);
             }
+
+            return list;
+
+        }catch(SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void delete(int id) {
+        final String query = "DELETE FROM books WHERE id = ?";
+
+        try (Connection con = Database.getConnection()) {
+            PreparedStatement stmnt = con.prepareStatement(query);
+            stmnt.setInt(1, id);
+
+            stmnt.executeUpdate();
+            System.out.println("Removed book");
 
         }catch(SQLException e) {
             e.printStackTrace();

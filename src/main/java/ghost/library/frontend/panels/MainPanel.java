@@ -1,6 +1,7 @@
 package ghost.library.frontend.panels;
 
 import ghost.library.frontend.pages.AddBookPage;
+import ghost.library.backend.entity.Book;
 import ghost.library.backend.services.BookService;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.BoxLayout;
 import javax.swing.Box;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import java.awt.Window;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
@@ -21,6 +25,10 @@ import java.awt.Color;
 
 public class MainPanel extends JPanel {
     
+    private final BookService bookService = new BookService();
+    private JTable bookTable;
+    private JPanel bookTablePanel;
+
     public MainPanel() {
         createPanel();
     }
@@ -46,7 +54,7 @@ public class MainPanel extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;   
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        add(bookTable(), gbc);
+        add(bookTablePanel(), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -68,6 +76,9 @@ public class MainPanel extends JPanel {
     }
 
     private List<JButton> sideButtons() {
+        JButton refresh = new JButton("refresh");
+        refresh.addActionListener(e -> buildBookTable());
+
         JButton addBook = new JButton("add book");
         addBook.addActionListener(e -> new AddBookPage().createAddBookWindow());
 
@@ -75,7 +86,19 @@ public class MainPanel extends JPanel {
         //editBook.addActionListener(e -> bookController.editBook());
 
         JButton deleteBook = new JButton("delete book");
-        //deleteBook.addActionListener(e -> bookController.deleteBook());
+        deleteBook.addActionListener(e -> {
+            int[] rows = bookTable.getSelectedRows();
+            if (rows.length > 0) {
+                String message = "Are you sure you want to delete (" + rows.length + ") books?";
+                if (showConfirmationAlert(message)) {
+                    for (int i = 0; i < rows.length; i++) {
+                        bookService.deleteBookById(String.valueOf(bookTable.getValueAt(rows[i], 0)));
+                    }
+                }
+            }else {
+                showWarningAlert("Nothing selected");
+            }
+        });
 
         JButton addUser = new JButton("add user");
         //addUser.addActionListener(e -> userController.addUser());
@@ -87,12 +110,10 @@ public class MainPanel extends JPanel {
         //deleteUser.addActionListener(e -> userController.deleteUser());
 
         //TEMPORARY       
-        JButton printBooks = new JButton("Print Books");
-        printBooks.addActionListener(e -> new BookService().getAll());
 
         JButton printUsers = new JButton("Print Users");
 
-        return List.of(addBook, editBook, deleteBook, addUser, editUser, deleteUser, printBooks, printUsers);
+        return List.of(refresh, addBook, editBook, deleteBook, addUser, editUser, deleteUser, printUsers);
     } 
 
     private JPanel topPanel() {
@@ -116,21 +137,40 @@ public class MainPanel extends JPanel {
         return topPanel;
     }
 
-    private JScrollPane bookTable() {
-        String[] columns = {"Name", "Author", "Date", "Status"};
-        Object[][] data = {
-            {"Test1", "Jakub", "25.05.2025", "Available"},
-            {"Test2", "Dominika", "08.02.2026", "Taken"},
-            {"Test3", "JK Rowling", "13.03.2012", "Taken"}
-        };
+    private JPanel bookTablePanel() {
+        bookTablePanel = new JPanel();
 
-        JTable books = new JTable(data, columns);
-        books.setPreferredScrollableViewportSize(new Dimension(1200, 700));
-        JScrollPane scrollPane = new JScrollPane(books);
-        
+        buildBookTable();
+
+        return bookTablePanel;
+    }
+
+    private void buildBookTable() {
+        bookTablePanel.removeAll();
+        List<Book> booksList = bookService.getAll();
+
+        String[] columns = {"Id", "Title", "Author", "Release Date", "Available"};
+
+        Object[][] data = booksList.stream()
+            .map(b -> new Object[]{
+                b.getId(),
+                b.getTitle(),
+                b.getAuthor(),
+                b.getReleaseDate(),
+                b.isAvailable() ? "Available" : "Taken"
+            })
+            .toArray(Object[][]::new);
+
+        bookTable = new JTable(data, columns);
+        bookTable.setPreferredScrollableViewportSize(new Dimension(1200, 700));
+
+        JScrollPane scrollPane = new JScrollPane(bookTable);
         scrollPane.setBorder(new LineBorder(Color.GRAY, 1, false));
 
-        return scrollPane;
+        bookTablePanel.add(scrollPane);
+
+        bookTablePanel.revalidate();
+        bookTablePanel.repaint();
     }
 
     private JPanel footer() {
@@ -142,5 +182,14 @@ public class MainPanel extends JPanel {
         footer.add(footerLabel);
 
         return footer;
+    }
+
+    private void showWarningAlert(String message) {
+        JOptionPane.showMessageDialog(null, message);
+    }
+
+    private boolean showConfirmationAlert(String message) {
+        int res = JOptionPane.showConfirmDialog(null, message, "Confirm", JOptionPane.YES_NO_OPTION);
+        return res == JOptionPane.YES_OPTION;
     }
 }

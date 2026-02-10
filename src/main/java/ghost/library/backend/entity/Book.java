@@ -16,6 +16,10 @@ public class Book {
         this.releaseDate = releaseDate;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -26,6 +30,10 @@ public class Book {
 
     public String getReleaseDate() {
         return releaseDate;
+    }
+
+    public boolean isAvailable() {
+        return available > 0;
     }
 
     public void setId(int id) {
