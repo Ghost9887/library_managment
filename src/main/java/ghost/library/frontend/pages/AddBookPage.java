@@ -1,6 +1,7 @@
 package ghost.library.frontend.pages;
 
 import ghost.library.frontend.panels.AddBookPanel;
+import ghost.library.frontend.panels.MainPanel;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 
@@ -12,10 +13,10 @@ public class AddBookPage {
 
     public AddBookPage() {}
 
-    public void createAddBookWindow() {
+    public void createAddBookWindow(MainPanel mainPanel) {
         FlatLightLaf.setup();
 
-        addBookFrame.add(new AddBookPanel());
+        addBookFrame.add(new AddBookPanel(mainPanel));
         addBookFrame.pack();
         addBookFrame.setLocationRelativeTo(null);
         addBookFrame.setVisible(true);

@@ -20,12 +20,14 @@ import java.util.Date;
 public class AddBookPanel extends JPanel {
     
     private final BookService bookService = new BookService();
+    private final MainPanel mainPanel;
 
     private JTextField titleInput;
     private JTextField authorInput;
     private JFormattedTextField releaseInput;
 
-    public AddBookPanel() {
+    public AddBookPanel(MainPanel mainPanel) {
+        this.mainPanel = mainPanel;
         createAddBookWindow();
     }
 
@@ -162,7 +164,7 @@ public class AddBookPanel extends JPanel {
                 authorInput.getText(),
                 releaseInput.getText()
             );
-            
+            mainPanel.buildBookTable();
             Window window = SwingUtilities.getWindowAncestor(this);
             if (window != null) {
                 window.dispose();

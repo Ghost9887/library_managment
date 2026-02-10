@@ -81,7 +81,9 @@ public class MainPanel extends JPanel {
         refresh.addActionListener(e -> buildBookTable());
 
         JButton addBook = new JButton("add book");
-        addBook.addActionListener(e -> new AddBookPage().createAddBookWindow());
+        addBook.addActionListener(e -> {
+            new AddBookPage().createAddBookWindow(this);
+        });
 
         JButton editBook = new JButton("edit book");
         editBook.addActionListener(e -> {
@@ -90,7 +92,7 @@ public class MainPanel extends JPanel {
 
                 Book book = bookService.getBookById(String.valueOf(bookTable.getValueAt(rows[0], 0)));
                 if (book != null) {
-                    new EditBookPage().createEditBookWindow(book);
+                    new EditBookPage().createEditBookWindow(book, this);
                 }else {
                     showWarningAlert("No book found");
                 }
@@ -110,6 +112,7 @@ public class MainPanel extends JPanel {
                     for (int i = 0; i < rows.length; i++) {
                         bookService.deleteBookById(String.valueOf(bookTable.getValueAt(rows[i], 0)));
                     }
+                    buildBookTable();
                 }
             }else {
                 showWarningAlert("Nothing selected");
@@ -148,7 +151,7 @@ public class MainPanel extends JPanel {
         return bookTablePanel;
     }
 
-    private void buildBookTable() {
+    public void buildBookTable() {
         bookTablePanel.removeAll();
         List<Book> booksList = bookService.getAllBooks();
 

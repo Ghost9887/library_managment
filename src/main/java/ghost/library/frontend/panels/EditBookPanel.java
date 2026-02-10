@@ -24,6 +24,7 @@ import java.util.Date;
 public class EditBookPanel extends JPanel {
     
     private final BookService bookService = new BookService();
+    private final MainPanel mainPanel;
     private Book book;
 
     private JTextField titleInput;
@@ -31,8 +32,9 @@ public class EditBookPanel extends JPanel {
     private JFormattedTextField releaseInput;
     private JCheckBox availableInput;
 
-    public EditBookPanel(Book book) {
+    public EditBookPanel(Book book, MainPanel mainPanel) {
         this.book = book;
+        this.mainPanel = mainPanel;
         createEditBookWindow();
     }
 
@@ -237,7 +239,7 @@ public class EditBookPanel extends JPanel {
                 book.setReleaseDate(release);
 
                 bookService.updateBook(book);
-            
+                mainPanel.buildBookTable();           
                 Window window = SwingUtilities.getWindowAncestor(this);
                 if (window != null) {
                     window.dispose();

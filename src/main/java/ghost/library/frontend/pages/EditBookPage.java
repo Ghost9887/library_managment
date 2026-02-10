@@ -1,6 +1,7 @@
 package ghost.library.frontend.pages;
 
 import ghost.library.frontend.panels.EditBookPanel;
+import ghost.library.frontend.panels.MainPanel;
 import ghost.library.backend.entity.Book;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -13,10 +14,10 @@ public class EditBookPage {
 
     public EditBookPage() {}
 
-    public void createEditBookWindow(Book book) {
+    public void createEditBookWindow(Book book, MainPanel mainPanel) {
         FlatLightLaf.setup();
 
-        editBookFrame.add(new EditBookPanel(book));
+        editBookFrame.add(new EditBookPanel(book, mainPanel));
         editBookFrame.pack();
         editBookFrame.setLocationRelativeTo(null);
         editBookFrame.setVisible(true);
