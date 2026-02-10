@@ -61,7 +61,7 @@ public class MainPanel extends JPanel {
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        add(footer(), gbc);
+        add(footerPanel(), gbc);
     }
 
     private JPanel sidePanel() {
@@ -176,7 +176,7 @@ public class MainPanel extends JPanel {
         bookTablePanel.repaint();
     }
 
-    private JPanel footer() {
+    private JPanel footerPanel() {
         JPanel footer = new JPanel();
 
         JLabel footerLabel = new JLabel("Made by GhostSoftware");
