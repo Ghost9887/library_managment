@@ -13,14 +13,22 @@ public final class UserService {
         userRepository.add(newUser);
     }
 
-    public void editUser() {
+    public void updateUser(User user) {
+        userRepository.update(user);
     }
 
-    public void deleteUser() {
+    public void deleteUserById(String idStr) {
+        int id = Integer.parseInt(idStr);
+        userRepository.delete(id);
     }
 
     public List<User> getAllUsers() {
         return userRepository.getAll();
+    }
+
+    public User getUserById(String idStr) {
+        int id = Integer.parseInt(idStr);
+        return userRepository.getById(id);
     }
 
 }

@@ -30,6 +30,40 @@ public final class UserRepository {
         }
     }
 
+    public void update(User user) {
+        final String query = "UPDATE users "
+        + "SET first_name = ?, "
+        + "last_name = ? "
+        + "WHERE id = ?;";
+
+        try (Connection con = Database.getConnection()) {
+            PreparedStatement stmnt = con.prepareStatement(query);
+
+            stmnt.setString(1, user.getFirstName());
+            stmnt.setString(2, user.getLastName());
+            stmnt.setInt(3, user.getId());
+
+            stmnt.executeUpdate();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+   
+
+    public void delete(int id) {
+        final String query = "DELETE FROM users WHERE id = ?";
+
+        try (Connection con = Database.getConnection()) {
+            PreparedStatement stmnt = con.prepareStatement(query);
+            
+            stmnt.setInt(1, id);
+
+            stmnt.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<User> getAll() {
         final String query = "SELECT * FROM users;";
 
@@ -50,6 +84,29 @@ public final class UserRepository {
 
             return list;
         }catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User getById(int id) {
+        final String query = 
+        "SELECT id, first_name, last_name FROM users WHERE id = ?";
+        
+        try (Connection con = Database.getConnection()) {
+            PreparedStatement stmnt = con.prepareStatement(query);
+            stmnt.setInt(1, id);
+
+            ResultSet res = stmnt.executeQuery();
+            User user = new User(
+                res.getString("first_name"),
+                res.getString("last_name")
+            );
+            user.setId(res.getInt("id"));
+
+            return user;
+
+        }catch(SQLException e) {
             e.printStackTrace();
             return null;
         }

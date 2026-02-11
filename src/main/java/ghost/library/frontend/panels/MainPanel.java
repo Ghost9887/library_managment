@@ -3,6 +3,7 @@ package ghost.library.frontend.panels;
 import ghost.library.frontend.pages.AddBookPage;
 import ghost.library.frontend.pages.EditBookPage;
 import ghost.library.frontend.pages.AddUserPage;
+import ghost.library.frontend.pages.EditUserPage;
 import ghost.library.backend.entity.Book;
 import ghost.library.backend.services.BookService;
 import ghost.library.backend.entity.User;
@@ -36,7 +37,7 @@ public class MainPanel extends JPanel {
     }
 
     private final BookService bookService = new BookService();
-    private final UserService userSerivce = new UserService();
+    private final UserService userService = new UserService();
     private JTable bookTable;
     private JTable userTable;
     private JPanel tablePanel;
@@ -112,35 +113,68 @@ public class MainPanel extends JPanel {
 
         JButton edit = new JButton("edit");
         edit.addActionListener(e -> {
-            int[] rows = bookTable.getSelectedRows();
-            if (rows.length == 1) {
+            if (currentTab == Tab.Books) {
+                int[] rows = bookTable.getSelectedRows();
+                if (rows.length == 1) {
 
-                Book book = bookService.getBookById(String.valueOf(bookTable.getValueAt(rows[0], 0)));
-                if (book != null) {
-                    new EditBookPage().createEditBookWindow(book, this);
+                    Book book = bookService.getBookById(String.valueOf(bookTable.getValueAt(rows[0], 0)));
+                    if (book != null) {
+                        new EditBookPage().createEditBookWindow(book, this);
+                    }else {
+                        showWarningAlert("No book found");
+                    }
+                }else if (rows.length > 1) {
+                    showWarningAlert("Too many books selected");
                 }else {
-                    showWarningAlert("No book found");
+                    showWarningAlert("Nothing selected");
                 }
-            }else if (rows.length > 1) {
-                showWarningAlert("Too many books selected");
             }else {
-                showWarningAlert("Nothing selected");
+                int[] rows = userTable.getSelectedRows();
+                if (rows.length == 1) {
+
+                    User user = userService.getUserById(String.valueOf(userTable.getValueAt(rows[0], 0)));
+                    if (user != null) {
+                        new EditUserPage().createEditUserWindow(user, this);
+                    }else {
+                        showWarningAlert("No user found");
+                    }
+                }else if (rows.length > 1) {
+                    showWarningAlert("Too many users selected");
+                }else {
+                    showWarningAlert("Nothing selected");
+                }
             }
         });
 
+        //TODO: Refactor
         JButton delete = new JButton("delete");
         delete.addActionListener(e -> {
-            int[] rows = bookTable.getSelectedRows();
-            if (rows.length > 0) {
-                String message = "Are you sure you want to delete (" + rows.length + ") books?";
-                if (showConfirmationAlert(message)) {
-                    for (int i = 0; i < rows.length; i++) {
-                        bookService.deleteBookById(String.valueOf(bookTable.getValueAt(rows[i], 0)));
+            if (currentTab == Tab.Books) {
+                int[] rows = bookTable.getSelectedRows();
+                if (rows.length > 0) {
+                    String message = "Are you sure you want to delete (" + rows.length + ") books?";
+                    if (showConfirmationAlert(message)) {
+                        for (int i = 0; i < rows.length; i++) {
+                            bookService.deleteBookById(String.valueOf(bookTable.getValueAt(rows[i], 0)));
+                        }
+                        buildTable();
                     }
-                    buildTable();
+                }else {
+                    showWarningAlert("Nothing selected");
                 }
             }else {
-                showWarningAlert("Nothing selected");
+                int[] rows = userTable.getSelectedRows();
+                if (rows.length > 0) {
+                    String message = "Are you sure you want to delete (" + rows.length + ") users?";
+                    if (showConfirmationAlert(message)) {
+                        for (int i = 0; i < rows.length; i++) {
+                            userService.deleteUserById(String.valueOf(userTable.getValueAt(rows[i], 0)));
+                        }
+                        buildTable();
+                    }
+                }else {
+                    showWarningAlert("Nothing selected");
+                }
             }
         });
 
@@ -209,7 +243,7 @@ public class MainPanel extends JPanel {
     private void buildUserTable() {
         tablePanel.removeAll();
 
-        List<User> usersList = userSerivce.getAllUsers();
+        List<User> usersList = userService.getAllUsers();
 
         String[] columns = {"Id", "First name", "Last name"};
 
