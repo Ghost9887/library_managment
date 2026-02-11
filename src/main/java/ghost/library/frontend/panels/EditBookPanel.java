@@ -239,7 +239,7 @@ public class EditBookPanel extends JPanel {
                 book.setReleaseDate(release);
 
                 bookService.updateBook(book);
-                mainPanel.buildBookTable();           
+                mainPanel.buildTable();           
                 Window window = SwingUtilities.getWindowAncestor(this);
                 if (window != null) {
                     window.dispose();

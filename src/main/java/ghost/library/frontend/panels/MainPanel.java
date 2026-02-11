@@ -2,13 +2,17 @@ package ghost.library.frontend.panels;
 
 import ghost.library.frontend.pages.AddBookPage;
 import ghost.library.frontend.pages.EditBookPage;
+import ghost.library.frontend.pages.AddUserPage;
 import ghost.library.backend.entity.Book;
 import ghost.library.backend.services.BookService;
+import ghost.library.backend.entity.User;
+import ghost.library.backend.services.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -26,10 +30,20 @@ import java.awt.Dimension;
 import java.awt.Color;
 
 public class MainPanel extends JPanel {
+    enum Tab {
+        Books,
+        Users
+    }
 
     private final BookService bookService = new BookService();
+    private final UserService userSerivce = new UserService();
     private JTable bookTable;
-    private JPanel bookTablePanel;
+    private JTable userTable;
+    private JPanel tablePanel;
+    private JPanel booksPanel;
+    private JPanel usersPanel;
+    private JTabbedPane tabPane;
+    private Tab currentTab = Tab.Books;
 
     public MainPanel() {
         createPanel();
@@ -62,7 +76,7 @@ public class MainPanel extends JPanel {
         gbc.fill = GridBagConstraints.BOTH;   
         gbc.weightx = 10.0;
         gbc.weighty = 10.0;
-        add(bookTablePanel(), gbc);
+        add(tablePanel(), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -85,15 +99,19 @@ public class MainPanel extends JPanel {
 
     private List<JButton> sideButtons() {
         JButton refresh = new JButton("refresh");
-        refresh.addActionListener(e -> buildBookTable());
+        refresh.addActionListener(e -> buildTable());
 
-        JButton addBook = new JButton("add book");
-        addBook.addActionListener(e -> {
-            new AddBookPage().createAddBookWindow(this);
+        JButton add = new JButton("add");
+        add.addActionListener(e -> {
+            if (currentTab == Tab.Books) {
+                new AddBookPage().createAddBookWindow(this);
+            }else {
+                new AddUserPage().createAddUserWindow(this);
+            }
         });
 
-        JButton editBook = new JButton("edit book");
-        editBook.addActionListener(e -> {
+        JButton edit = new JButton("edit");
+        edit.addActionListener(e -> {
             int[] rows = bookTable.getSelectedRows();
             if (rows.length == 1) {
 
@@ -110,8 +128,8 @@ public class MainPanel extends JPanel {
             }
         });
 
-        JButton deleteBook = new JButton("delete book");
-        deleteBook.addActionListener(e -> {
+        JButton delete = new JButton("delete");
+        delete.addActionListener(e -> {
             int[] rows = bookTable.getSelectedRows();
             if (rows.length > 0) {
                 String message = "Are you sure you want to delete (" + rows.length + ") books?";
@@ -119,14 +137,14 @@ public class MainPanel extends JPanel {
                     for (int i = 0; i < rows.length; i++) {
                         bookService.deleteBookById(String.valueOf(bookTable.getValueAt(rows[i], 0)));
                     }
-                    buildBookTable();
+                    buildTable();
                 }
             }else {
                 showWarningAlert("Nothing selected");
             }
         });
 
-        return List.of(refresh, addBook, editBook, deleteBook);
+        return List.of(refresh, add, edit, delete);
     } 
 
     private JPanel topPanel() {
@@ -161,18 +179,64 @@ public class MainPanel extends JPanel {
         return searchPanel;
     }
 
-    private JPanel bookTablePanel() {
-        bookTablePanel = new JPanel();
+    private JPanel tablePanel() {
+        tablePanel = new JPanel();
 
-         
+        tabPane = new JTabbedPane();
 
-        buildBookTable();
-        
-        return bookTablePanel;
+        tabPane.addTab("Books", new JPanel());
+        tabPane.addTab("Users", new JPanel());
+
+        tabPane.addChangeListener(e -> buildTable());
+        tablePanel.add(tabPane);
+
+        buildTable(); 
+
+        return tablePanel;
     }
 
-    public void buildBookTable() {
-        bookTablePanel.removeAll();
+    public void buildTable() {
+        int index = tabPane.getSelectedIndex();
+        if (index == 1) {
+            currentTab = Tab.Users;
+            buildUserTable();
+        } else {
+            currentTab = Tab.Books;
+            buildBookTable();
+        }
+    }
+
+    private void buildUserTable() {
+        tablePanel.removeAll();
+
+        List<User> usersList = userSerivce.getAllUsers();
+
+        String[] columns = {"Id", "First name", "Last name"};
+
+        Object[][] data = usersList.stream()
+            .map(u -> new Object[]{
+                u.getId(),
+                u.getFirstName(),
+                u.getLastName()
+            })
+            .toArray(Object[][]::new);
+
+        JTable userTable = new JTable(data, columns);
+        JScrollPane scroll = new JScrollPane(userTable);
+        scroll.setPreferredSize(new Dimension(1200, 700));
+
+        tabPane.setComponentAt(0, new JPanel());
+        tabPane.setComponentAt(1, scroll);
+
+        tablePanel.add(tabPane);
+
+        tablePanel.revalidate();
+        tablePanel.repaint();
+    }
+
+    private void buildBookTable() {
+        tablePanel.removeAll();
+
         List<Book> booksList = bookService.getAllBooks();
 
         String[] columns = {"Id", "Title", "Author", "Release Date", "Available"};
@@ -187,16 +251,17 @@ public class MainPanel extends JPanel {
             })
             .toArray(Object[][]::new);
 
-        bookTable = new JTable(data, columns);
-        bookTable.setPreferredScrollableViewportSize(new Dimension(1200, 700));
+        JTable bookTable = new JTable(data, columns);
+        JScrollPane scroll = new JScrollPane(bookTable);
+        scroll.setPreferredSize(new Dimension(1200, 700));
 
-        JScrollPane scrollPane = new JScrollPane(bookTable);
-        scrollPane.setBorder(new LineBorder(Color.GRAY, 1, false));
+        tabPane.setComponentAt(0, scroll);
+        tabPane.setComponentAt(1, new JPanel());
 
-        bookTablePanel.add(scrollPane);
+        tablePanel.add(tabPane);
 
-        bookTablePanel.revalidate();
-        bookTablePanel.repaint();
+        tablePanel.revalidate();
+        tablePanel.repaint();
     }
 
     private JPanel footerPanel() {

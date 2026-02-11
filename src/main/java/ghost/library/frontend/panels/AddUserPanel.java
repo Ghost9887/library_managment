@@ -1,6 +1,6 @@
 package ghost.library.frontend.panels;
 
-import ghost.library.backend.services.BookService;
+import ghost.library.backend.services.UserService;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,21 +18,20 @@ import javax.swing.text.DateFormatter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AddBookPanel extends JPanel {
+public class AddUserPanel extends JPanel {
     
-    private final BookService bookService = new BookService();
+    private final UserService userService = new UserService();
     private final MainPanel mainPanel;
 
-    private JTextField titleInput;
-    private JTextField authorInput;
-    private JFormattedTextField releaseInput;
+    private JTextField firstNameInput;
+    private JTextField lastNameInput;
 
-    public AddBookPanel(MainPanel mainPanel) {
+    public AddUserPanel(MainPanel mainPanel) {
         this.mainPanel = mainPanel;
-        createAddBookWindow();
+        createAddUserWindow();
     }
 
-    private void createAddBookWindow() {
+    private void createAddUserWindow() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -46,24 +45,17 @@ public class AddBookPanel extends JPanel {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.NONE;
-        add(titleLabel(), gbc);
+        add(firstNameLabel(), gbc);
 
         gbc.gridx = 1;
-        add(titleInput(), gbc);
+        add(firstNameInput(), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        add(authorLabel(), gbc);
+        add(lastNameLabel(), gbc);
 
         gbc.gridx = 1;
-        add(authorInput(), gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        add(releaseLabel(), gbc);
-
-        gbc.gridx = 1;
-        add(releaseInput(), gbc);
+        add(lastNameInput(), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -75,81 +67,51 @@ public class AddBookPanel extends JPanel {
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JLabel label = new JLabel("Add book");
+        JLabel label = new JLabel("Add user");
         label.setFont(new Font("Serif", Font.BOLD, 18));
         panel.add(label);
 
         return panel;
     }
 
-    private JPanel titleLabel() {
+    private JPanel firstNameLabel() {
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        JLabel label = new JLabel("Title: ");
+        JLabel label = new JLabel("First name: ");
         label.setFont(new Font("Serif", Font.PLAIN, 13));
         panel.add(label);
 
         return panel;
     }
 
-    private JPanel titleInput() {
+    private JPanel firstNameInput() {
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        titleInput = new JTextField(15);
-        panel.add(titleInput);
+        firstNameInput = new JTextField(15);
+        panel.add(firstNameInput);
 
         return panel;
     }
 
-    private JPanel authorLabel() {
+    private JPanel lastNameLabel() {
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        JLabel label = new JLabel("Author: ");
+        JLabel label = new JLabel("Last name: ");
         label.setFont(new Font("Serif", Font.PLAIN, 13));
         panel.add(label);
 
         return panel;
     }
 
-    private JPanel authorInput() {
+    private JPanel lastNameInput() {
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(5, 5, 5, 50));
 
-        authorInput = new JTextField(15);
-        panel.add(authorInput);
-
-        return panel;
-    }
-
-    private JPanel releaseLabel() {
-        JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(5, 5, 5, 50));
-
-        JLabel label = new JLabel("Release Date: ");
-        label.setFont(new Font("Serif", Font.PLAIN, 13));
-        panel.add(label);
-
-        return panel;
-    }
-
-    private JPanel releaseInput() {
-        JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(5, 5, 5, 50));
-        
-        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        DateFormatter df = new DateFormatter(format);
-        df.setAllowsInvalid(false);
-        df.setOverwriteMode(true);
-
-        releaseInput = new JFormattedTextField(df);
-        releaseInput.setColumns(10);
-        releaseInput.setValue(new Date());
-
-        panel.add(releaseInput);
-
+        lastNameInput = new JTextField(15);
+        panel.add(lastNameInput);
 
         return panel;
     }
@@ -161,13 +123,12 @@ public class AddBookPanel extends JPanel {
         JButton saveBtn = new JButton("Save");
         saveBtn.addActionListener(e -> {
 
-            String title = titleInput.getText();
-            String author = authorInput.getText();
-            if (title.length() > 0 && author.length() > 0) {
-                bookService.addBook(
-                    title,
-                    author,
-                    releaseInput.getText()
+            String firstName = firstNameInput.getText();
+            String lastName = lastNameInput.getText();
+            if (firstName.length() > 0 && lastName.length() > 0) {
+                userService.addUser(
+                    firstName,
+                    lastName
                 );
                 mainPanel.buildTable();
                 Window window = SwingUtilities.getWindowAncestor(this);
