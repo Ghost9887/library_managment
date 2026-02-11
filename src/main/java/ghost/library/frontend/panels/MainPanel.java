@@ -221,7 +221,7 @@ public class MainPanel extends JPanel {
             })
             .toArray(Object[][]::new);
 
-        JTable userTable = new JTable(data, columns);
+        userTable = new JTable(data, columns);
         JScrollPane scroll = new JScrollPane(userTable);
         scroll.setPreferredSize(new Dimension(1200, 700));
 
@@ -251,7 +251,7 @@ public class MainPanel extends JPanel {
             })
             .toArray(Object[][]::new);
 
-        JTable bookTable = new JTable(data, columns);
+        bookTable = new JTable(data, columns);
         JScrollPane scroll = new JScrollPane(bookTable);
         scroll.setPreferredSize(new Dimension(1200, 700));
 
