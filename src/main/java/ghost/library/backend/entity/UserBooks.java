@@ -10,4 +10,20 @@ public class UserBooks {
         this.bookId = bookId;
     }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
 }

@@ -177,7 +177,7 @@ public class MainPanel extends JPanel {
                 }
             }
         });
-
+        
         return List.of(refresh, add, edit, delete);
     } 
 

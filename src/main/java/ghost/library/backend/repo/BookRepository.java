@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-//HANDLES QUERYS TO THE DATABASE
+//HANDLES QUERIES TO THE DATABASE
 public final class BookRepository {
     
     public BookRepository() {}
